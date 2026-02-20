@@ -80,15 +80,6 @@ Gender effect: Male = 0, Female = +0.08, Non-binary = +0.06
 Persecution type effect: sexual\_violence = +0.15, violence = +0.10, detention = +0.05, threats = 0, discrimination = −0.05  
 Risk score is clipped to [0, 1]; raw pre-clip value retained as `risk_score_uncapped`  
 
-**Integration Score**
-
-$$I = 0.4C + 0.2\left(1 - \frac{|age - 35|}{35}\right) + 0.4\varepsilon$$
-
-Measures predicted adaptability if resettled to new country
-Credibility (40%) — inherits language, education, and trauma bias from credibility_score
-Age proximity to 35 (20%) — peaks at age 35, decreases in both directions
-Random noise (40%) — represents unpredictable external factors (host community, job market, etc.)
-
 ### Calculated Scores
 
 | Variable | Type / Range | Determination Logic |
