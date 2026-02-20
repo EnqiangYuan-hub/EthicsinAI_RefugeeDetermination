@@ -1,13 +1,13 @@
 # CODEBOOK: Synthetic Refugee Status Determination (RSD) Dataset
 
-**Project:** AI Decision-Making in Refugee Status Determination — A Case Study  
+**Project:** AI Decision-Making in Refugee Status Determination Case Study  
 **Institution:** Duke University, Mechanical Engineering & Materials Science  
-**Dataset file:** `synthetic_RSD_dataset.csv`  
+**Dataset file:** `RefugeeProfile.csv`  
 **Rows:** 500 | **Columns:** 26 | **Random seed:** 42
 
 ---
 
-## Background for Non-Legal Audiences
+## Background
 
 This dataset simulates the **Refugee Status Determination (RSD)** process — the legal procedure used by UNHCR and national governments to decide whether a person qualifies for refugee protection under the [1951 Refugee Convention](https://www.unhcr.org/en-us/1951-refugee-convention.html).
 
@@ -24,7 +24,7 @@ This dataset models an AI system that scores applicants on these criteria and pr
 
 ## Intentional Bias Design (Pedagogical Features)
 
-> ⚠️ This dataset intentionally encodes biases documented in real automated RSD systems. These are **features for classroom discussion**, not flaws to be corrected.
+> This dataset intentionally encodes biases documented in real automated RSD systems. 
 
 | Bias | How It Is Encoded | Why It Matters |
 |------|-------------------|----------------|
@@ -113,25 +113,6 @@ These rates are intentionally varied to reflect both real conflict severity and 
 | Myanmar | ~46% |
 | Eritrea | ~45% |
 | Afghanistan | ~50% |
-
-> **Discussion prompt:** What accounts for variation across countries? Is it driven by risk scores, credibility scores, nexus rates, or some combination? Are these differences justifiable?
-
----
-
-## Suggested Analysis Questions
-
-1. Cross-tabulate `credibility_score` against `reported_trauma`. What pattern emerges? Is this a fair way to assess credibility?
-2. Compare `AI_decision` vs. `final_decision` by country. Where do human reviewers most often override the AI?
-3. What is the gender breakdown among applicants with `bias_flag = severe`? Among those denied despite `nexus_established = True`?
-4. How does `processing_time_days` differ between approved and denied cases? What are the human costs of longer processing?
-5. Examine `risk_score_uncapped`. How many cases exceed 1.0? What does the cap hide?
-6. What is the appeal overturn rate? What does a 40% overturn rate suggest about the accuracy of the original AI decision?
-
----
-
-## Data Generation
-
-The dataset was generated using Python (NumPy random seed 42). The generation script is available at `src/generate_rsd_dataset.py`.
 
 ---
 
