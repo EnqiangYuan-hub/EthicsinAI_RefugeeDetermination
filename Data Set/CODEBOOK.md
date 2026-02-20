@@ -11,15 +11,15 @@ To be recognized as a refugee under the [1951 Refugee Convention](https://www.un
 ```
 Applicant Data (demographics + legal claim)
             ↓
-    ┌───────────────────────────────────────┐
-    │           Scoring Functions           │
-    │  credibility_score  (language, edu,   │
-    │                      trauma penalty)  │
-    │  risk_score         (country, gender, │
-    │                      persecution)     │
-    │  integration_score  (credibility,     │
-    │                      age, random)     │
-    └───────────────────────────────────────┘
+┌───────────────────────────────────────┐
+│           Scoring Functions           │
+│  credibility_score  (language, edu,   │
+│                      trauma penalty)  │
+│  risk_score         (country, gender, │
+│                      persecution)     │
+│  integration_score  (credibility, age)│
+│                                       │
+└───────────────────────────────────────┘
             ↓
     Composite Score S
             ↓
