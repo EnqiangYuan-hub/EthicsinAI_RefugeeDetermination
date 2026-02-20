@@ -58,9 +58,10 @@ Balances credibility, age proximity to 35, and random external factors. Inherits
 
 ## AI Decision Rule
 
-$$\text{AI\_decision} = \begin{cases} \text{"approve"} & \text{if } S > 0.62 \text{ and } C > 0.50 \text{ and nexus\_established} = \text{True} \\ \text{"deny"} & \text{otherwise} \end{cases}$$
+S = 0.45 * R + 0.30 * C + 0.15 * nexus_established + 0.10 * (1 - state_protection_score)
 
-Where $S = 0.45R + 0.30C + 0.15 \cdot \text{nexus} + 0.10 \cdot (1 - \text{state\_protection\_score})$. Produces approximately 54% overall approval with meaningful variation by country.
+AI_decision = "approve"  if S > 0.62 AND C > 0.50 AND nexus_established = True
+            = "deny"      otherwise
 
 ---
 
