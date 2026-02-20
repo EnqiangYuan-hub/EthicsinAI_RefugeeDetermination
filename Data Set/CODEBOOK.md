@@ -114,7 +114,7 @@ AI_decision = "approve"  if S > 0.62 AND C > 0.50 AND nexus_established = True
 |----------|-------------|---------------------|
 | `AI_decision` | Categorical (approve / deny) | See decision rule above |
 | `human_reviewed` | Boolean | ~10% of cases randomly flagged for human review. Separate from override — a case can be reviewed without the decision being changed |
-| `human_override` | Boolean | Among reviewed cases, ~50% result in a flipped decision. The low overall override rate (~5% of all cases) reflects automation bias in human-in-the-loop systems |
+| `human_override` | Boolean | Among reviewed cases, ~50% result in a flipped decision. |
 | `final_decision` | Categorical (approve / deny) | Starts as `AI_decision`; flipped where `human_override = True`. **Primary outcome variable for analysis** |
 | `processing_time_days` | Integer (~30–180) | Base time Uniform(30, 120). Human-reviewed cases add Uniform(20, 60) days, representing the trade-off between oversight and efficiency |
 
