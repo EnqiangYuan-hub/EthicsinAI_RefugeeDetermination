@@ -18,18 +18,6 @@ Applicant Data → Scoring Functions → AI Decision
 
 ---
 
-## Intentional Bias
-
-> ⚠️ This dataset intentionally encodes biases documented in real automated RSD systems. These are **pedagogical features**, not errors.
-
-The **credibility score** rewards language fluency and formal education — not because these indicate truthfulness, but because bureaucratic systems tend to privilege applicants who can express themselves in ways that match institutional expectations. Applicants with **reported trauma** receive an additional credibility penalty (~−0.08), reflecting how inconsistent or fragmented testimony — a well-documented trauma response — is penalized in automated assessments (Kinchin & Mougouei, 2022).
-
-The **human review rate** is intentionally low (10%), and overrides only partially correct AI errors, reflecting documented automation bias where human reviewers tend to defer to algorithmic outputs rather than exercise independent judgment (NYSBA, 2022).
-
-**Non-binary applicants** comprise ~4% of the dataset — calibrated to approximate real RSD caseload proportions rather than equal sampling. This intentionally surfaces how small groups can become statistically invisible in algorithmic audits, even when they face distinct persecution risks.
-
----
-
 ## Feature Computation
 
 Three continuous scores are derived from applicant inputs to simulate AI-driven assessment:
@@ -58,7 +46,7 @@ Balances credibility, age proximity to 35, and random external factors. Inherits
 
 ## AI Decision Rule
 
-S = 0.45 * R + 0.30 * C + 0.15 * nexus_established + 0.10 * (1 - state_protection_score)
+S = 0.45 * R + 0.30 * C + 0.15 * nexusestablished + 0.10 * (1 - stateprotectionscore)
 
 AI_decision = "approve"  if S > 0.62 AND C > 0.50 AND nexus_established = True
             = "deny"      otherwise
