@@ -78,7 +78,7 @@ $$R = \text{Country base} + G_{\text{effect}} + P_{\text{effect}} + \varepsilon,
 Country base rates range from 0.55 (Venezuela) to 0.85 (Syria)   
 Gender effect: Male = 0, Female = +0.08, Non-binary = +0.06   
 Persecution type effect: sexual\_violence = +0.15, violence = +0.10, detention = +0.05, threats = 0, discrimination = −0.05  
-Risk score is clipped to [0, 1]; raw pre-clip value retained as `risk_score_uncapped`  
+Risk score is clipped to [0, 1] 
 
 ### Calculated Scores
 
@@ -86,8 +86,6 @@ Risk score is clipped to [0, 1]; raw pre-clip value retained as `risk_score_unca
 |----------|-------------|---------------------|
 | `credibility_score` | Continuous [0–1] | See formula above. Contains intentional bias: language and education inflate scores; trauma deflates them |
 | `risk_score` | Continuous [0–1] | See formula above. Clipped at 1.0 |
-| `risk_score_uncapped` | Continuous (unbounded) | Raw pre-clip value retained so students can examine the artifact introduced by the hard cap at 1.0 |
-| `integration_score` | Continuous [0–1] | See formula above. Inherits credibility bias through the C term |
 
 ---
 
@@ -115,7 +113,6 @@ AI_decision = "approve"  if S > 0.62 AND C > 0.50 AND nexus_established = True
 |----------|-------------|---------------------|
 | `appealed` | Boolean | For denied cases: 30% randomly assigned True |
 | `appeal_outcome` | Categorical (overturned / upheld / N/A) | If appealed: 40% overturned (refugee status granted), 60% upheld (denial confirmed). N/A for non-appealed cases |
-| `bias_flag` | Categorical (none / moderate / severe) | Simulates a fairness audit. Probability of moderate/severe elevated when trauma was reported but credibility is low, or when nexus was established but the case was still denied. Baseline: none ~70%, moderate ~20%, severe ~10% |
 
 ---
 
