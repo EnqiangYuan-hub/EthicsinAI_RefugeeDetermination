@@ -18,15 +18,6 @@ Applicant Data → Scoring Functions → AI Decision
 
 ---
 
-## AI Decision Rule
-
-S = 0.45 * R + 0.30 * C + 0.15 * nexusestablished + 0.10 * (1 - stateprotectionscore)
-
-AI_decision = "approve"  if S > 0.62 AND C > 0.50 AND nexus_established = True
-            = "deny"      otherwise
-
----
-
 ## Variable Reference
 
 ### Applicant Inputs
@@ -87,6 +78,14 @@ Balances credibility, age proximity to 35, and random external factors.
 | `integration_score` | Continuous [0–1] | See formula above. Inherits credibility bias through the C term |
 
 ### System Process
+
+## AI Decision Rule
+
+S = 0.45 * R + 0.30 * C + 0.15 * `nexus_established` + 0.10 * (1 - 'state_protection_score')
+
+AI_decision = "approve"  if S > 0.62 AND C > 0.50 AND nexus_established = True
+            = "deny"      otherwise
+
 
 | Variable | Type / Range | Determination Logic |
 |----------|-------------|---------------------|
