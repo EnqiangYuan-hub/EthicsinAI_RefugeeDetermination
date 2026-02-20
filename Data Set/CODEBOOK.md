@@ -9,11 +9,29 @@ To be recognized as a refugee under the [1951 Refugee Convention](https://www.un
 ## Overall Flow
 
 ```
-Applicant Data → Scoring Functions → AI Decision
-                                          ↓
-                               Human Review (~10% of cases)
-                                          ↓
-                              Final Decision → Appeal Outcome
+Applicant Data (demographics + legal claim)
+            ↓
+    ┌───────────────────────────────────────┐
+    │           Scoring Functions           │
+    │  credibility_score  (language, edu,   │
+    │                      trauma penalty)  │
+    │  risk_score         (country, gender, │
+    │                      persecution)     │
+    │  integration_score  (credibility,     │
+    │                      age, random)     │
+    └───────────────────────────────────────┘
+            ↓
+    Composite Score S
+            ↓
+    AI Decision 
+            ↓
+    Human Review (~10% of cases flagged)
+            ↓  (~50% of reviewed cases overridden)
+    Final Decision
+            ↓
+    Denied cases → Appeal (30% file) → overturned (40%) / upheld (60%)
+            ↓
+    Bias Audit → bias_flag (none / moderate / severe)
 ```
 
 ---
@@ -57,10 +75,10 @@ Trauma penalty: −0.08 if `reported_trauma = True`. Final score clipped to [0, 
 
 $$R = \text{Country base} + G_{\text{effect}} + P_{\text{effect}} + \varepsilon, \quad \varepsilon \sim \mathcal{N}(0,\ 0.05)$$
 
-Country base rates range from 0.55 (Venezuela) to 0.85 (Syria). 
-Gender effect: Male = 0, Female = +0.08, Non-binary = +0.06. 
-Persecution type effect: sexual\_violence = +0.15, violence = +0.10, detention = +0.05, threats = 0, discrimination = −0.05. 
-Risk score is clipped to [0, 1]; raw pre-clip value retained as `risk_score_uncapped`.
+Country base rates range from 0.55 (Venezuela) to 0.85 (Syria)   
+Gender effect: Male = 0, Female = +0.08, Non-binary = +0.06   
+Persecution type effect: sexual\_violence = +0.15, violence = +0.10, detention = +0.05, threats = 0, discrimination = −0.05  
+Risk score is clipped to [0, 1]; raw pre-clip value retained as `risk_score_uncapped`  
 
 **Integration Score**
 
