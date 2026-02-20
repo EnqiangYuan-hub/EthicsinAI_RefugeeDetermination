@@ -15,9 +15,9 @@ Applicant Data (demographics + legal claim)
 │           Scoring Functions           │
 │  credibility_score  (language, edu,   │
 │                      trauma penalty)  │
+│                                       │
 │  risk_score         (country, gender, │
 │                      persecution)     │
-│  integration_score  (credibility, age)│
 │                                       │
 └───────────────────────────────────────┘
             ↓
@@ -31,7 +31,6 @@ Applicant Data (demographics + legal claim)
             ↓
     If Denied → Appeal (30% file) → overturned (40%) / upheld (60%)
             ↓
-    Bias Audit → bias_flag (none / moderate / severe)
 ```
 
 ---
@@ -52,16 +51,15 @@ Applicant Data (demographics + legal claim)
 | `prior_camp_years` | Integer (0–9) | Uniform random draw representing years spent in a refugee camp before this application |
 | `persecution_ground` | Categorical | Uniform random draw from the five 1951 Convention grounds: race, religion, nationality, political_opinion, social_group |
 | `persecution_type` | Categorical | Uniform random draw from: violence, detention, threats, sexual_violence, discrimination |
-| `nexus_established` | Boolean | Random draw with P(True) = 0.70. Represents whether a causal link exists between the persecution and a protected ground — a critical legal requirement without which a claim fails regardless of risk level |
 | `state_protection_score` | Continuous [0.05–1.0] | Normal(0.3, 0.15), clipped with a floor of 0.05. Represents the home state's capacity and willingness to protect the applicant. Lower score = weaker state protection = stronger refugee claim |
 | `internal_relocation_possible` | Boolean | Random draw with P(True) = 0.40. If True, the applicant could safely relocate within their home country, weakening the claim |
-| `reported_trauma` | Boolean | Bernoulli draw with base rate ~65% for high-conflict countries (Syria, Afghanistan, Eritrea, Somalia) and cases involving sexual violence or detention; ~40% otherwise. **Intentionally used to penalize credibility — a documented flaw in real systems** |
+| `reported_trauma` | Boolean | Bernoulli draw with base rate ~65% for high-conflict countries (Syria, Afghanistan, Eritrea, Somalia) and cases involving sexual violence or detention; ~40% otherwise. |
 
 ---
 
 ## Feature Computation
 
-Three continuous scores are derived from applicant inputs to simulate AI-driven assessment:
+Two scores are derived from applicant inputs to simulate AI-driven assessment:
 
 **Credibility Score**
 
@@ -93,11 +91,14 @@ Risk score is clipped to [0, 1]
 
 ## AI Decision Rule
 
-S = 0.45 * R + 0.30 * C + 0.15 * `nexus_established` + 0.10 * (1 - 'state_protection_score')
+The AI combines the two scores using this rule:
 
-AI_decision = "approve"  if S > 0.62 AND C > 0.50 AND nexus_established = True
-            = "deny"      otherwise
- 
+$$S = 0.60 * RiskScore + 0.40 * CredibilityScore$$
+
+approve  if  S > 0.67  AND  credibility_score > 0.50  
+
+deny     otherwise
+
 
 | Variable | Type / Range | Determination Logic |
 |----------|-------------|---------------------|
