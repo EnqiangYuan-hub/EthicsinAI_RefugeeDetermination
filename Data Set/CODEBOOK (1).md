@@ -18,32 +18,6 @@ Applicant Data → Scoring Functions → AI Decision
 
 ---
 
-## Feature Computation
-
-Three continuous scores are derived from applicant inputs to simulate AI-driven assessment:
-
-**Credibility Score**
-
-$$C = \text{Base} \sim \mathcal{N}(0.65,\ 0.15) + L_{\text{effect}} + E_{\text{effect}} + T_{\text{penalty}}$$
-
-Language effect: None = −0.20, Basic = −0.10, Intermediate = 0, Advanced = +0.05, Fluent = +0.10.
-Education effect: None = −0.10, Primary = 0, Secondary = +0.05, Tertiary = +0.10.
-Trauma penalty: −0.08 if `reported_trauma = True`. Final score clipped to [0, 1].
-
-**Risk Score**
-
-$$R = \text{Country base} + G_{\text{effect}} + P_{\text{effect}} + \varepsilon, \quad \varepsilon \sim \mathcal{N}(0,\ 0.05)$$
-
-Country base rates range from 0.55 (Venezuela) to 0.85 (Syria). Gender effect: Male = 0, Female = +0.08, Non-binary = +0.06. Persecution type effect: sexual\_violence = +0.15, violence = +0.10, detention = +0.05, threats = 0, discrimination = −0.05. Clipped to [0, 1]; raw pre-clip value retained as `risk_score_uncapped`.
-
-**Integration Score**
-
-$$I = 0.4C + 0.2\left(1 - \frac{|age - 35|}{35}\right) + 0.4\varepsilon$$
-
-Balances credibility, age proximity to 35, and random external factors. Inherits credibility bias.
-
----
-
 ## AI Decision Rule
 
 S = 0.45 * R + 0.30 * C + 0.15 * nexusestablished + 0.10 * (1 - stateprotectionscore)
@@ -73,6 +47,35 @@ AI_decision = "approve"  if S > 0.62 AND C > 0.50 AND nexus_established = True
 | `state_protection_score` | Continuous [0.05–1.0] | Normal(0.3, 0.15), clipped with a floor of 0.05. Represents the home state's capacity and willingness to protect the applicant. Lower score = weaker state protection = stronger refugee claim |
 | `internal_relocation_possible` | Boolean | Random draw with P(True) = 0.40. If True, the applicant could safely relocate within their home country, weakening the claim |
 | `reported_trauma` | Boolean | Bernoulli draw with base rate ~65% for high-conflict countries (Syria, Afghanistan, Eritrea, Somalia) and cases involving sexual violence or detention; ~40% otherwise. **Intentionally used to penalize credibility — a documented flaw in real systems** |
+
+---
+
+## Feature Computation
+
+Three continuous scores are derived from applicant inputs to simulate AI-driven assessment:
+
+**Credibility Score**
+
+$$C = \text{Base} \sim \mathcal{N}(0.65,\ 0.15) + L_{\text{effect}} + E_{\text{effect}} + T_{\text{penalty}}$$
+
+Language effect: None = −0.20, Basic = −0.10, Intermediate = 0, Advanced = +0.05, Fluent = +0.10  
+Education effect: None = −0.10, Primary = 0, Secondary = +0.05, Tertiary = +0.10  
+Trauma penalty: −0.08 if `reported_trauma = True`. Final score clipped to [0, 1]  
+
+**Risk Score**
+
+$$R = \text{Country base} + G_{\text{effect}} + P_{\text{effect}} + \varepsilon, \quad \varepsilon \sim \mathcal{N}(0,\ 0.05)$$
+
+Country base rates range from 0.55 (Venezuela) to 0.85 (Syria). 
+Gender effect: Male = 0, Female = +0.08, Non-binary = +0.06. 
+Persecution type effect: sexual\_violence = +0.15, violence = +0.10, detention = +0.05, threats = 0, discrimination = −0.05. 
+Risk score is clipped to [0, 1]; raw pre-clip value retained as `risk_score_uncapped`.
+
+**Integration Score**
+
+$$I = 0.4C + 0.2\left(1 - \frac{|age - 35|}{35}\right) + 0.4\varepsilon$$
+
+Balances credibility, age proximity to 35, and random external factors. 
 
 ### Calculated Scores
 
