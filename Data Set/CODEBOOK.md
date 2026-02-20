@@ -25,11 +25,11 @@ Applicant Data (demographics + legal claim)
             ↓
     AI Decision 
             ↓
-    Human Review (~10% of cases flagged)
-            ↓  (~50% of reviewed cases overridden)
+    Human Review
+            ↓  
     Final Decision
             ↓
-    Denied cases → Appeal (30% file) → overturned (40%) / upheld (60%)
+    If Denied → Appeal (30% file) → overturned (40%) / upheld (60%)
             ↓
     Bias Audit → bias_flag (none / moderate / severe)
 ```
@@ -84,7 +84,10 @@ Risk score is clipped to [0, 1]; raw pre-clip value retained as `risk_score_unca
 
 $$I = 0.4C + 0.2\left(1 - \frac{|age - 35|}{35}\right) + 0.4\varepsilon$$
 
-Balances credibility, age proximity to 35, and random external factors. 
+Measures predicted adaptability if resettled to new country
+Credibility (40%) — inherits language, education, and trauma bias from credibility_score
+Age proximity to 35 (20%) — peaks at age 35, decreases in both directions
+Random noise (40%) — represents unpredictable external factors (host community, job market, etc.)
 
 ### Calculated Scores
 
@@ -95,6 +98,8 @@ Balances credibility, age proximity to 35, and random external factors.
 | `risk_score_uncapped` | Continuous (unbounded) | Raw pre-clip value retained so students can examine the artifact introduced by the hard cap at 1.0 |
 | `integration_score` | Continuous [0–1] | See formula above. Inherits credibility bias through the C term |
 
+---
+
 ### System Process
 
 ## AI Decision Rule
@@ -103,7 +108,7 @@ S = 0.45 * R + 0.30 * C + 0.15 * `nexus_established` + 0.10 * (1 - 'state_protec
 
 AI_decision = "approve"  if S > 0.62 AND C > 0.50 AND nexus_established = True
             = "deny"      otherwise
-
+ 
 
 | Variable | Type / Range | Determination Logic |
 |----------|-------------|---------------------|
